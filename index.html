@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科學化 AI 健身教練 | 碎片時間核心訓練</title>
+    <style>
+        :root {
+            --primary: #00ADB5;
+            --secondary: #393E46;
+            --dark: #222831;
+            --light: #EEEEEE;
+            --accent: #FF5722;
+            --text-main: #333;
+            --text-light: #f4f4f4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark);
+            color: var(--primary);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            overflow-x: auto;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        nav button:hover, nav button.active {
+            background-color: var(--primary);
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            min-height: 80vh;
+        }
+
+       .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+       .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            border-left: 5px solid var(--primary);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        /* Scenario Cards */
+       .scenario-intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+       .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+       .exercise-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+
+       .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+       .card-header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+       .card-body {
+            padding: 1.5rem;
+        }
+
+       .tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Visual & Video Placeholders */
+       .visual-guide {
+            background-color: #f8f9fa;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: #718096;
+        }
+
+       .visual-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+       .visual-caption {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+       .visual-desc {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+        }
+
+       .video-placeholder {
+            background-color: #000;
+            color: white;
+            height: 180px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+       .play-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+       .play-btn::after {
+            content: '';
+            border-left: 15px solid white;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            margin-left: 5px;
+        }
+
+        /* Schedule Table */
+       .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 1rem;
+        }
+
+       .schedule-table th,.schedule-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+       .schedule-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+       .warning-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem;
+            margin-top: 2rem;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: #777;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>科學化 AI 健身教練</h1>
+    <p>零碎時間核心肌群強化計畫：從摩托車到床鋪的全方位整合</p>
+</header>
+
+<nav>
+    <button class="active" onclick="openTab('summary')">總覽與原理</button>
+    <button onclick="openTab('motorcycle')">🛵 摩托車通勤</button>
+    <button onclick="openTab('office')">💼 辦公室訓練</button>
+    <button onclick="openTab('walk')">🚶 步行與移動</button>
+    <button onclick="openTab('bed')">🛏️ 臥床與居家</button>
+    <button onclick="openTab('schedule')">📅 整合課表</button>
+</nav>
+
+<main>
+    <div id="summary" class="tab-content active">
+        <div class="scenario-intro">
+            <h2>微劑量訓練 (Exercise Snacking) 理論</h2>
+            <p>本計畫將傳統的「整塊運動時間」拆解為全天候的「微劑量」刺激。針對核心肌群的<strong>深層穩定系統</strong>（腹橫肌、多裂肌）進行長時間、低強度的喚醒，這比單次高強度的仰臥起坐更能改善體態並預防腰痛。</p>
+            <div class="visual-guide" style="background-color: #e3f2fd; border-color: #90caf9;">
+                <span class="visual-icon">🔬</span>
+                <span class="visual-caption">【圖解：核心肌群層次結構】</span>
+                <p class="visual-desc">示意圖顯示人體剖面。外層標示「動作肌（腹直肌）」負責爆發力；內層標示「穩定肌（腹橫肌）」如同束腹般包覆脊椎。本計畫重點在於喚醒內層紅色區域。</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="motorcycle" class="tab-content">
+        <div class="scenario-intro">
+            <h2>雙輪力學：摩托車騎乘訓練</h2>
+            <p>利用騎乘時的震動與慣性，將身體轉化為主動懸吊系統。重點在於「抗疲勞」與「骨盆穩定」。<br><strong>⚠️ 安全警告：行進間僅做微幅靜態收縮，嚴禁大動作。</strong></p>
+        </div>
+        
+        <div class="exercise-grid">
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>油箱夾持與骨盆鎖定</h3>
+                    <span class="tag">行進間</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>大腿內收夾緊油箱，臀部微收，將尾骨捲向肚臍（骨盆後傾）。</p>
+                    <p><strong>原理：</strong>消除骨盆前傾，減少下背震動壓力。</p>
+                    <div class="visual-guide">
+                        <span class="visual-caption">【圖解：騎乘力學向量】</span>
+                        <p class="visual-desc">側面圖顯示騎士脊椎。紅色箭頭指出若無核心支撐，煞車時力量會壓迫手腕與頸椎；綠色箭頭顯示核心收縮時，力量被腹部與大腿吸收，上半身放鬆。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>紅燈真空收縮</h3>
+                    <span class="tag">紅燈暫停</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>停車雙腳著地時，用力將肚臍吸向脊椎，想像穿上緊身褲，維持至綠燈。</p>
+                    <p><strong>原理：</strong>強化腹橫肌（天然護腰）的等長收縮能力。</p>
+                    <div class="video-placeholder">
+                        <div class="play-btn"></div>
+                        <p>影片示範：側面視角，騎士在靜止時腹部明顯內收凹陷，但肩膀與頭部保持不動。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="office" class="tab-content">
+        <div class="scenario-intro">
+            <h2>人體工學逆襲：辦公室訓練</h2>
+            <p>將辦公椅視為訓練器材，打破久坐造成的臀肌失憶與核心鬆弛。</p>
+        </div>
+
+        <div class="exercise-grid">
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>坐姿提膝 (桌下隱形版)</h3>
+                    <span class="tag">開會可用</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>坐直離椅背，雙手輕壓桌面。腹部用力將單腳膝蓋抬起 5 公分，停留 10 秒。</p>
+                    <p><strong>原理：</strong>利用「交互抑制」原理，強迫下腹部收縮並放鬆下背部。</p>
+                    <div class="visual-guide">
+                        <span class="visual-caption">【圖解：力臂槓桿原理】</span>
+                        <p class="visual-desc">透視圖顯示坐姿人體。紅色亮點在下腹部與髖屈肌。藍色箭頭顯示手部向下壓桌面的反作用力如何輔助核心收縮。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>旋轉椅阻力對抗</h3>
+                    <span class="tag">休息時間</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>雙腳離地，雙手抓桌緣固定上半身。利用腹斜肌力量控制椅子左右旋轉。</p>
+                    <div class="video-placeholder">
+                        <div class="play-btn"></div>
+                        <p>影片示範：俯視角度。上半身完全靜止，僅下半身連同椅子進行小幅度的左右扭轉。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="walk" class="tab-content">
+        <div class="scenario-intro">
+            <h2>移動動力鏈：步行與通勤</h2>
+            <p>步行是全身性的旋轉運動。透過「拉拉鍊」意象，建立對角線的穩定力量。</p>
+        </div>
+
+        <div class="exercise-grid">
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>單手負重行走 (Suitcase Carry)</h3>
+                    <span class="tag">通勤中</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>單手提公事包或重物，身體保持絕對垂直，不可向重物側傾斜。</p>
+                    <p><strong>原理：</strong>抗側屈訓練，強力刺激對側腰方肌，預防腰痛。</p>
+                    <div class="visual-guide">
+                        <span class="visual-caption">【圖解：受力分析】</span>
+                        <p class="visual-desc">背面圖。左手提重物，身體傾向左側（錯誤）；右側腰部肌肉亮紅燈強力收縮，將脊椎拉回中立直線（正確）。</p>
+                    </div>
+                </div>
+            </div>
+             <div class="exercise-card">
+                <div class="card-header">
+                    <h3>「拉拉鍊」步態</h3>
+                    <span class="tag">隨時</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>走路時想像從恥骨往肚臍拉上一條緊身拉鍊，下腹微收。</p>
+                    <div class="video-placeholder">
+                        <div class="play-btn"></div>
+                        <p>影片示範：慢動作步態。特寫腹部區域，顯示隨著邁步，下腹部保持平坦張力，骨盆無過度晃動。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bed" class="tab-content">
+        <div class="scenario-intro">
+            <h2>不穩定表面：臥床與居家錨點</h2>
+            <p>床鋪的柔軟特性類似平衡墊，能增加本體感覺與深層肌群參與。居家地板則用於建立肌力基礎。</p>
+        </div>
+
+        <div class="exercise-grid">
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>床鋪死蟲式 (Dead Bug)</h3>
+                    <span class="tag">睡前/起床</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>仰臥手腳朝天。對側手腳延伸（右手左腳），背部用力壓住床面不可有縫隙。</p>
+                    <p><strong>原理：</strong>軟床會放大晃動，強迫核心進行抗旋轉穩定。</p>
+                    <div class="visual-guide">
+                        <span class="visual-caption">【圖解：動作路徑】</span>
+                        <p class="visual-desc">仰臥圖示。綠色虛線顯示手腳延伸的方向。紅色❌標記在下背部，強調「不可拱起」。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <div class="card-header">
+                    <h3>居家錨點：鳥狗式</h3>
+                    <span class="tag">地板動作</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>動作：</strong>四足跪姿，延伸對側手腳。想像背上放了一杯水不能灑出來。</p>
+                    <div class="video-placeholder">
+                        <div class="play-btn"></div>
+                        <p>影片示範：側面視角。模特兒動作極慢，強調在手腳伸直的瞬間，腰部完全沒有塌陷或扭轉。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="schedule" class="tab-content">
+        <div class="scenario-intro">
+            <h2>每日微劑量課表</h2>
+            <p>無需額外撥出大塊時間，將訓練融入既有生活節奏。</p>
+        </div>
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>時間 / 場景</th>
+                    <th>動作關鍵字</th>
+                    <th>目標與圖解重點</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>07:00 起床 (床鋪)</strong></td>
+                    <td>死蟲式 + 臀橋</td>
+                    <td>喚醒脊椎穩定肌群</td>
+                </tr>
+                <tr>
+                    <td><strong>08:00 通勤 (機車)</strong></td>
+                    <td>紅燈真空收縮</td>
+                    <td>深層腹橫肌激活</td>
+                </tr>
+                <tr>
+                    <td><strong>10:00 工作 (辦公室)</strong></td>
+                    <td>坐姿提膝 (每腳15秒)</td>
+                    <td>對抗久坐髖屈肌緊繃</td>
+                </tr>
+                <tr>
+                    <td><strong>12:00 午休 (移動)</strong></td>
+                    <td>單手提重物行走</td>
+                    <td>抗側屈核心訓練</td>
+                </tr>
+                <tr>
+                    <td><strong>14:00 工作 (辦公室)</strong></td>
+                    <td>隱形腹部內收</td>
+                    <td>維持姿勢，預防駝背</td>
+                </tr>
+                <tr>
+                    <td><strong>20:00 居家 (地板)</strong></td>
+                    <td>棒式 + 鳥狗式 (10分鐘)</td>
+                    <td><strong>錨點訓練：</strong>建立基礎肌力</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <h3>⚠️ 專業教練叮嚀</h3>
+            <ul>
+                <li><strong>疼痛警訊：</strong>若出現刺痛或麻痺感（特別是延伸至腿部），請立即停止並諮詢醫師。</li>
+                <li><strong>騎乘安全：</strong>路況複雜時請放棄訓練，專注駕駛。</li>
+                <li><strong>飲食配合：</strong>腹肌是在廚房練出來的，請配合蛋白質攝取與熱量控制。</li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2024 科學化 AI 健身教練 | 本計畫僅供參考，請依個人體能狀況調整</p>
+</footer>
+
+<script>
+    function openTab(tabName) {
+        // Hide all tab contents
+        var contents = document.getElementsByClassName('tab-content');
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].classList.remove('active');
+        }
+
+        // Deactivate all buttons
+        var buttons = document.getElementsByTagName('button');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+
+        // Show the specific tab content
+        document.getElementById(tabName).classList.add('active');
+        
+        // Activate the specific button (need to match logic or pass 'this')
+        // Simple iteration to find button with matching onclick
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].getAttribute('onclick').includes(tabName)) {
+                buttons[i].classList.add('active');
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
